@@ -106,26 +106,27 @@ def transform_dataset(subject_list,kind,label,droprate1,droprate2,delete=True):
 
     for subject in subject_list:
         if kind == "FCN":
-            path_adj = "/home/MBGL/data/ADNI/delete_feature/fcn_20/fcn"
-            adj_fl = os.path.join(path_adj,  subject + ".txt")
-            # path_adj = "/home/MBGL/data/ADNI/all_fcn"
-            # adj_fl = os.path.join(path_adj, "r" + subject + ".txt")
+            path_feat = "/home/MBGL/data/ADNI/delete_feature/fcn_20/fcn"
+            feat_fl = os.path.join(path_feat,  subject + ".txt")
+            path_adj = "/home/MBGL/data/ADNI/all_fcn"
+            adj_fl = os.path.join(path_adj, "r" + subject + ".txt")
             droprate=droprate1
         else:
-            path_adj = "/home/MBGL/data/ADNI/delete_feature/fcn_20/scn"
-            adj_fl = os.path.join(path_adj, subject + ".txt")
-            # path_adj = "/home/MBGL/data/ADNI/all_scn"
-            # adj_fl = os.path.join(path_adj,subject + ".txt")
+            path_feat = "/home/MBGL/data/ADNI/delete_feature/fcn_20/scn"
+            feat_fl = os.path.join(path_feat, subject + ".txt")
+            path_adj = "/home/MBGL/data/ADNI/all_scn"
+            adj_fl = os.path.join(path_adj,subject + ".txt")
             droprate = droprate2
 
         adj_matrix = np.loadtxt(adj_fl, dtype=np.float64).T
+        feature=np.loadtxt(feat_fl, dtype=np.float64).T
         edge_index_temp = sp.coo_matrix(adj_matrix)
         values = edge_index_temp.data
 
         indices = np.vstack((edge_index_temp.row, edge_index_temp.col))
         edge_index_A = torch.tensor(indices, dtype=torch.long)
         v = torch.tensor(values, dtype=torch.float32)
-        x1=torch.tensor(adj_matrix,dtype=torch.float32)
+        x1=torch.tensor(feature,dtype=torch.float32)
 
 
         #标签0为CN，标签1为mci，标签2为AD
