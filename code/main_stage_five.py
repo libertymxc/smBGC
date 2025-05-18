@@ -84,11 +84,9 @@ def main(args):
             train_list1 = [FCN_dataset[i] for i in train_index]
             train_list2 = [SCN_dataset[i] for i in train_index]
 
-            # 应用增强
             train_list1 = feature_enhance(train_list1, args.drop_rate_fcn)
             train_list2 = feature_enhance(train_list2, args.drop_rate_scn)
 
-            # 封装为 Dataset
             train_set1 = ListDataset(train_list1)
             train_set2 = ListDataset(train_list2)
 
